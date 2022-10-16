@@ -1,0 +1,18 @@
+version: '3'
+services:
+  flask-backend:
+    container_name: flask-backend
+    restart: always
+    build: .
+    ports:
+      - "5000:5000"
+    links:
+      - mongo-database
+  mongo-database:
+    container_name: mongo-database
+    image: mongo:latest
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
