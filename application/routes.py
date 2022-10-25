@@ -1,5 +1,5 @@
 from application import app
-from flask import render_template
+from flask import render_template, request
 
 
 @app.route('/')
@@ -22,3 +22,9 @@ def courses():
 @app.route('/register')
 def register():
     return render_template("register.html", login=True)
+
+
+@app.route('/infer', method=['POST'])
+def success():
+    if request.method == 'POST':
+        print('dupa')
