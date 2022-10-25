@@ -24,7 +24,11 @@ def register():
     return render_template("register.html", login=True)
 
 
-@app.route('/infer', method=['POST'])
-def success():
-    if request.method == 'POST':
-        print('dupa')
+@app.route('/about')
+def about():
+    return render_template("about.html")
+
+# @app.route('/infer', method=['POST'])
+# def success():
+#     if request.method == 'POST':
+#         print('dupa')
