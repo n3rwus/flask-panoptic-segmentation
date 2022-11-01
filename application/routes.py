@@ -14,8 +14,9 @@ def login():
     return render_template("login.html", login=True)
 
 
-@app.route('/courses')
-def courses():
+@app.route('/courses/')
+@app.route('/courses/<term>')
+def courses(term='Spring 2019'):
     courses_data = [
         {
             "courseID": "1111",
@@ -53,7 +54,7 @@ def courses():
             "term": "Fall"
         }
     ]
-    return render_template("courses.html", courseData=courses_data, courses=True)
+    return render_template("courses.html", courseData=courses_data, courses=True, term=term)
 
 
 @app.route('/register')
@@ -64,6 +65,14 @@ def register():
 @app.route('/about')
 def about():
     return render_template("about.html", about=True)
+
+
+@app.route('/enrollment')
+def enrollment():
+    course_id = request.args.get('courseID')
+    title = request.args.get('title')
+    term = request.args.get('term')
+    return render_template("enrollment.html", enrollment=True, data={"id": course_id, "title": title, "term": term})
 
 # @app.route('/infer', method=['POST'])
 # def success():
