@@ -1,5 +1,5 @@
 from application import app
-from flask import render_template, request
+from flask import render_template, request, jsonify
 
 
 @app.route('/')
@@ -73,6 +73,11 @@ def enrollment():
     title = request.args.get('title')
     term = request.args.get('term')
     return render_template("enrollment.html", enrollment=True, data={"id": course_id, "title": title, "term": term})
+
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    return jsonify({'class_id': 'IMAGE_NET_XXX', 'class_name': 'Cat'})
 
 # @app.route('/infer', method=['POST'])
 # def success():
