@@ -1,6 +1,8 @@
 from application import app
 from flask import render_template, request, jsonify
 
+from application.transform_pipeline import get_prediction
+
 
 @app.route('/')
 @app.route('/index')
@@ -77,9 +79,8 @@ def enrollment():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    return jsonify({'class_id': 'IMAGE_NET_XXX', 'class_name': 'Cat'})
-
-# @app.route('/infer', method=['POST'])
-# def success():
-#     if request.method == 'POST':
-#         print('dupa')
+    if request.method == 'POST':
+        file = request.files['file']
+        img_bytes = file.read()
+        class_id, class_name = get_prediction(image_bytes=img_bytes)
+        return jsonify({'class_id': class_id, 'class_name': class_name})
