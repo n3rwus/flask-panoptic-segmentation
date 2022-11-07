@@ -6,6 +6,7 @@ instance/*
 !instance/.gitignore
 .webassets-cache
 .env
+.flaskenv
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -30,6 +31,7 @@ parts/
 sdist/
 var/
 wheels/
+data/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
