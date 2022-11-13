@@ -19,27 +19,15 @@ header {
     text-align: center;
 }
 
-li {
-    display: inline;
-    padding: 5px;
-}
-
 a {
     text-decoration: none;
-    color: blue;
+    color: inherit;
 }
 
-a:hover {
-    color: red;
-}
-
-hr {
-    width: 100%;
-    height: 4px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: darkblue;
-    border: 0 none;
+a:active, a:visited, a:focus {
+    border: none;
+    outline: none;
+    text-decoration: none;
 }
 
 input[type=text], input[type=password] {
@@ -83,7 +71,7 @@ footer {
     color: white;
     padding: 5px;
     margin-top: 10px;
-    bottom: 0px;
+    bottom: 0;
 }
 
 .btn-submit {
@@ -99,5 +87,81 @@ footer {
 
 .btn-submit:hover {
     opacity: 1;
+}
+
+/*Nav*/
+.nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px 0;
+    background-color: #9158ff;
+    text-align: center;
+    border-top: 1px solid #9663ff;
+    box-shadow: 0 3px 0 #5118bf;
+    z-index: 100;
+}
+
+.nav ul {
+    padding: 0;
+    height: 40px;
+    line-height: 200%;
+    font-size: 20px;
+    margin: auto 0;
+    list-style: none;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.nav ul a {
+    color: #ffffff;
+    text-decoration: none;
+    display: block;
+}
+
+.nav ul > li {
+    width: 150px;
+    height: 40px;
+    float: left;
+    border-right: 1px dashed #6D26FF;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+}
+
+.nav ul > li:hover {
+    background-color: #7E40FF;
+}
+
+.nav ul > li:first-child {
+    border-left: 1px dashed #6D26FF;
+}
+
+.nav ul > li:hover > a {
+    color: #fff;
+}
+
+/*SUBNAV*/
+ol {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 6px;
+    margin: 0px;
+    list-style: none;
+    background-color: #7E40FF;
+    border-radius: 4px;
+    position: relative;
+    visibility: hidden;
+    opacity: 0;
+}
+
+ul > li:hover > ol {
+    visibility: visible;
+    opacity: 1.0;
+}
+
+ol > li:hover {
+    background: #9158ff !important;
+    border-radius: 5px !important;
 }
 

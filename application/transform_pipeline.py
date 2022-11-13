@@ -8,8 +8,8 @@ from torchvision import models
 from PIL import Image
 
 
-def get_model(path=None):
-    if None not in path:
+def get_model(path=''):
+    if '' not in path:
         model = torch.load(path)
     else:
         model = models.densenet121(pretrained=True)
