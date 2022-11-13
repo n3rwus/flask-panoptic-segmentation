@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 *:before,
@@ -9,25 +11,24 @@
 
 html,
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     height: 100%;
     position: relative;
-    margin: 0px;
+    margin: 0;
 }
 
 header {
     text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+    background-color: #24252a;
 }
 
 a {
     text-decoration: none;
     color: inherit;
-}
-
-a:active, a:visited, a:focus {
-    border: none;
-    outline: none;
-    text-decoration: none;
 }
 
 input[type=text], input[type=password] {
@@ -75,7 +76,7 @@ footer {
 }
 
 .btn-submit {
-    background-color: cornflowerblue;
+    background-color: #0088a9;
     color: white;
     padding: 16px 20px;
     margin: 8px 0;
@@ -89,79 +90,7 @@ footer {
     opacity: 1;
 }
 
-/*Nav*/
 .nav {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 8px 0;
-    background-color: #9158ff;
-    text-align: center;
-    border-top: 1px solid #9663ff;
-    box-shadow: 0 3px 0 #5118bf;
-    z-index: 100;
-}
-
-.nav ul {
-    padding: 0;
-    height: 40px;
-    line-height: 200%;
-    font-size: 20px;
-    margin: auto 0;
-    list-style: none;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.nav ul a {
-    color: #ffffff;
-    text-decoration: none;
-    display: block;
-}
-
-.nav ul > li {
-    width: 150px;
-    height: 40px;
-    float: left;
-    border-right: 1px dashed #6D26FF;
-    transition-property: background-color;
-    transition-duration: 0.2s;
-}
-
-.nav ul > li:hover {
-    background-color: #7E40FF;
-}
-
-.nav ul > li:first-child {
-    border-left: 1px dashed #6D26FF;
-}
-
-.nav ul > li:hover > a {
-    color: #fff;
-}
-
-/*SUBNAV*/
-ol {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 6px;
-    margin: 0px;
-    list-style: none;
-    background-color: #7E40FF;
-    border-radius: 4px;
-    position: relative;
-    visibility: hidden;
-    opacity: 0;
-}
-
-ul > li:hover > ol {
-    visibility: visible;
-    opacity: 1.0;
-}
-
-ol > li:hover {
-    background: #9158ff !important;
-    border-radius: 5px !important;
+    font-size: 25px;
 }
 
