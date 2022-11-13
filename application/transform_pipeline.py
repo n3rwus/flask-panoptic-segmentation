@@ -1,14 +1,18 @@
 # We need to prepare image for processing,
-# so fun will return bytes (????)
+# so func will return bytes (????)
 import io
 
+import torch
 import torchvision.transforms as transform
 from torchvision import models
 from PIL import Image
 
 
-def get_model():
-    model = models.densenet121(pretrained=True)
+def get_model(path=None):
+    if None not in path:
+        model = torch.load(path)
+    else:
+        model = models.densenet121(pretrained=True)
     model.eval()
     return model
 
