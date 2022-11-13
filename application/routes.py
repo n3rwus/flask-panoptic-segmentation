@@ -1,7 +1,8 @@
 from application import app
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect
 
-from application.transform_pipeline import get_prediction
+from application.inference import get_prediction
+from application.transform_pipeline import format_class_name
 
 
 @app.route('/')
@@ -84,3 +85,19 @@ def predict():
         img_bytes = file.read()
         class_id, class_name = get_prediction(image_bytes=img_bytes)
         return jsonify({'class_id': class_id, 'class_name': class_name})
+
+
+@app.route('/tmp', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files.get('file')
+        if not file:
+            return
+        img_bytes = file.read()
+        class_id, class_name = get_prediction(image_bytes=img_bytes)
+        class_name = format_class_name(class_name)
+        return render_template('result.html', class_id=class_id,
+                               class_name=class_name)
+    return render_template('tmp.html')

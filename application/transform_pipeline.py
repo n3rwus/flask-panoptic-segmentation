@@ -2,13 +2,20 @@
 # so fun will return bytes (????)
 import io
 import json
+
 import torchvision.transforms as transform
 from torchvision import models
 from PIL import Image
 
-model = models.densenet121(pretrained=True)
-model.eval()
-imagenet_class_index = json.load(open('application/static/imagenet_class_index.json'))
+# model = models.densenet121(pretrained=True)
+# model.eval()
+
+
+
+def get_model():
+    model = models.densenet121(pretrained=True)
+    model.eval()
+    return model
 
 
 def transform_image(image_bytes):
@@ -23,10 +30,7 @@ def transform_image(image_bytes):
     return my_transform(image).unsqueeze(0)
 
 
-def get_prediction(image_bytes):
-    tensor = transform_image(image_bytes)
-    outputs = model.forward(tensor)
-    # y_hat will contain the index of the predicted class id
-    _, y_hat = outputs.max(1)
-    predicted_idx = str(y_hat.item())
-    return imagenet_class_index[predicted_idx]
+def format_class_name(class_name):
+    class_name = class_name.replace('_', ' ')
+    class_name = class_name.title()
+    return class_name
