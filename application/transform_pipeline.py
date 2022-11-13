@@ -1,15 +1,10 @@
 # We need to prepare image for processing,
 # so fun will return bytes (????)
 import io
-import json
 
 import torchvision.transforms as transform
 from torchvision import models
 from PIL import Image
-
-# model = models.densenet121(pretrained=True)
-# model.eval()
-
 
 
 def get_model():
