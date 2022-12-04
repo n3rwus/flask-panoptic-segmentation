@@ -33,5 +33,5 @@ def upload_file():
         class_id, class_name = get_prediction(image_bytes=img_bytes)
         class_name = format_class_name(class_name)
         return render_template('result.html', class_id=class_id,
-                               class_name=class_name)
+                               class_name=class_name, image_after=img_bytes)
     return render_template('index.html')
