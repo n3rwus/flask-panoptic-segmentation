@@ -29,13 +29,18 @@
 
     <script type="text/javascript">
         $('#input-file').bind('change', function () {
+
+            let isEmpty = this.files.length
+            if(isEmpty === 0) {
+                alert('DUPA')
+                return
+            }
             let fileSize = this.files[0].size / 1024 / 1024; // this gives in MB
             if (fileSize > 1) {
                 $("#input-file").val(null);
                 alert('file is too big. images more than 1MB are not allowed')
                 return
             }
-
             let ext = $('#input-file').val().split('.').pop().toLowerCase();
             if ($.inArray(ext, ['jpg', 'jpeg']) === -1) {
                 $("#input-file").val(null);

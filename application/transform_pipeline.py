@@ -13,7 +13,7 @@ def get_model(path=''):
         model = torch.load(path)
     else:
         model = models.densenet121(pretrained=True)
-    model.eval()
+    model.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu')).eval()
     return model
 
 
@@ -25,7 +25,7 @@ def transform_image(image_bytes):
         transform.Normalize(
             [0.485, 0.456, 0.406],
             [0.229, 0.224, 0.225])])
-    image = Image.open(io.BytesIO(image_bytes))
+    image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
     return my_transform(image).unsqueeze(0)
 
 
