@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
 </head>
 
-<body class="align-items-center">
-<div class="container align-content-center">
+<body>
+<div class="container">
     {% include "includes/nav.html" %}
     <br>
     {% block content %}
     {% endblock %}
-    {% include "includes/footer.html" %}
 </div>
+{% include "includes/footer.html" %}
 </body>
 </html>    
