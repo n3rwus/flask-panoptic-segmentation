@@ -34,15 +34,10 @@
             <h5 class="card-title">Upload any image</h5>
             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
             <form method=post enctype=multipart/form-data>
-                <div class="mb-3">
-                    <input class="form-control" type="file" name="file" id="input-file">
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" name="file" id="input-file" aria-label="Upload">
+                    <button class="btn btn-primary" type="submit">Upload</button>
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-                <br/>
-                <button class="btn btn-primary btn-lg btn-block" type="submit">Upload</button>
             </form>
         </div>
     </div>
