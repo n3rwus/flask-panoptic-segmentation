@@ -7,14 +7,14 @@
     <link rel="stylesheet" href="../static/css/main.css"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<div class="container">
+<body class="align-items-center">
+<div class="container align-content-center">
     {% include "includes/nav.html" %}
-    <br/>
+    <br>
     {% block content %}
     {% endblock %}
+    {% include "includes/footer.html" %}
 </div>
-{% include "includes/footer.html" %}
 </body>
 </html>    
