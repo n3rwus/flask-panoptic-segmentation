@@ -1,20 +1,13 @@
-# We need to prepare image for processing,
-# so func will return bytes (????)
 import io
 
-import torch
+import torch.cuda
 import torchvision.transforms as transform
 from torchvision import models
 from PIL import Image
 
 
 def get_model(path=''):
-    if '' not in path:
-        model = torch.load(path)
-    else:
-        model = models.densenet121(pretrained=True)
-    model.to(torch.device('cuda' if torch.cuda.is_available() else 'cpu')).eval()
-    return model
+    return models.densenet121(pretrained=True).to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
 
 
 def transform_image(image_bytes):
