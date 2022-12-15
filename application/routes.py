@@ -30,7 +30,7 @@ def upload_file():
             return redirect(request.url)
         file = request.files.get('file')
         if not file:
-            return
+            return redirect(request.url)
         img_bytes = file.read()
         class_id, class_name = get_prediction(image_bytes=img_bytes)
         class_name = format_class_name(class_name)
