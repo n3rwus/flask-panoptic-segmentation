@@ -4,7 +4,7 @@ Flask-PyMongo==2.3.0
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.1
-pymongo==4.3.2
+pymongo==4.3.3
 Werkzeug==2.2.2
 Flask-Bootstrap==3.3.7.1
 Flask-WTF==1.0.1
@@ -14,3 +14,4 @@ torch==1.13.0
 torchvision==0.14.0
 Pillow==9.3.0
 requests~=2.28.1
+numpy~=1.23.4

@@ -1,17 +1,16 @@
-<header>
-    <nav>
-        <ul class="nav nav-pills">
-            <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link {% if index %} active {% endif %}">Home</a>
+<nav class="navbar navbar-expand-lg stick-top">
+    <a class="navbar-brand" href="{{ url_for('upload_file') }}">Image Segmentation</a>
+    <div class="container-fluid">
+        <ul class="nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('upload_file') }}">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item"><a href="{{ url_for('courses') }}" class="nav-link {% if courses %} active {% endif %}">Classes</a>
-            </li>
-            <li class="nav-item"><a href="{{ url_for('register') }}" class="nav-link {% if register %} active {% endif %}">Register</a>
-            </li>
-            <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link {% if login %} active {% endif %}">Login</a>
-            </li>
-            <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link {% if about %} active {% endif %}">About</a>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('about') }}">About</a>
             </li>
         </ul>
-    </nav>
-    <hr style="clear:both">
-</header>
+        <span class="navbar-text">
+            Made with ❤
+        </span>
+    </div>
+</nav>
