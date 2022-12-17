@@ -30,11 +30,11 @@ def upload_file():
             return redirect(request.url)
         file = request.files.get('file')
         if not file:
-            return
+            return redirect(request.url)
         img_bytes = file.read()
         class_id, class_name = get_prediction(image_bytes=img_bytes)
         class_name = format_class_name(class_name)
         return render_template('result.html', class_id=class_id,
                                class_name=class_name, image_after=img_bytes, is_cuda_used=torch.cuda.is_available(),
-                               device_name=torch.cuda.get_device_name(0))
+                               device_name=(torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU"))
     return render_template('index.html')

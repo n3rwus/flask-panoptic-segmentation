@@ -5,6 +5,13 @@ import torchvision.transforms as transform
 from torchvision import models
 from PIL import Image
 
+detr = torch.hub.load('facebookresearch/detr', 'detr_resnet50', pretrained=True)
+
+
+def get_detr(model_path='facebookresearch/detr'):
+    return torch.hub.load(model_path, 'detr_resnet50', pretrained=True).to(
+        torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
+
 
 def get_model(path=''):
     return models.densenet121(pretrained=True).to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
