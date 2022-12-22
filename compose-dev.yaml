@@ -3,7 +3,7 @@ services:
     entrypoint:
     - sleep
     - infinity
-    image: docker/dev-environments-default:stable-1
+    image: nvidia/cuda:11.8.0-base-ubuntu20.04
     init: true
     volumes:
     - type: bind
