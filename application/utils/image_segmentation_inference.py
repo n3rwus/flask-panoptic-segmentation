@@ -1,7 +1,7 @@
 import torch
 import math
 import matplotlib.pyplot as plt
-from image_segmentation_transform_pipeline import transform_image, get_model, postprocessor, get_tensor
+from image_segmentation_transform_pipeline import get_model, postprocessor, get_tensor
 import itertools
 import seaborn as sns
 import numpy

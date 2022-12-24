@@ -385,3 +385,4 @@ pip-selfcheck.json
 /.idea/vcs.xml
 /detectron2/
 .vscode/settings.json
+tmp.ipynb
