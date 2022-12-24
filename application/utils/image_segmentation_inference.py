@@ -1,18 +1,19 @@
 import torch
 import math
 import matplotlib.pyplot as plt
-from image_segmentation_transform_pipeline import transform_image, get_model
+from image_segmentation_transform_pipeline import transform_image, get_model, postprocessor, get_tensor
+import itertools
+import seaborn as sns
 
+palette = itertools.cycle(sns.color_palette())
 model = get_model()
+tensor = get_tensor()
+out = model(tensor)
 
 
-def get_prediction(image_bytes):
-    tensor = transform_image(image_bytes)
-
-    if torch.cuda.is_available():
-        tensor = tensor.to(torch.device("cuda:0"))
-
-    return model(tensor)
+def print_panoptic_segmentation():
+    return postprocessor(out, torch.as_tensor(
+        tensor.shape[-2:]).unsqueeze(0))[0]
 
 
 # Plot all the remaining masks

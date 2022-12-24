@@ -23,6 +23,15 @@ def get_model():
     return model.to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
 
 
+def get_tensor(image_bytes):
+    tensor = transform_image(image_bytes)
+
+    if torch.cuda.is_available():
+        tensor = tensor.to(torch.device("cuda:0"))
+        
+    return tensor
+
+
 # Detectron2 uses a different numbering scheme, we build a conversion table
 def conversion_table_for_Detectron2():
     coco2d2 = {}
