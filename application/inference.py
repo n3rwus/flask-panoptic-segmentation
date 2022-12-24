@@ -2,7 +2,7 @@ import json
 
 import torch.cuda
 
-from application.utils.transform_pipeline import get_model, transform_image
+from application.transform_pipeline import get_model, transform_image
 
 model = get_model()
 imagenet_class_index = json.load(open('application/static/imagenet_class_index.json'))

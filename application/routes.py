@@ -3,8 +3,8 @@ import torch.cuda
 from application import app
 from flask import render_template, request, jsonify, redirect
 
-from application.utils.inference import get_prediction
-from application.utils.transform_pipeline import format_class_name
+from application.inference import get_prediction
+from application.transform_pipeline import format_class_name
 
 
 @app.route('/about')
