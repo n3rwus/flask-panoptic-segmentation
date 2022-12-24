@@ -14,7 +14,7 @@ import numpy
 
 torch.set_grad_enabled(False)
 
-CLASSES = read_coco_classes_from_file
+CLASSES = read_coco_classes_from_file()
 model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
                                       return_postprocessor=True, num_classes=250)
 
@@ -24,7 +24,7 @@ def get_model():
 
 
 # Detectron2 uses a different numbering scheme, we build a conversion table
-def conversion_table_for_Detectron2(CLASSES):
+def conversion_table_for_Detectron2():
     coco2d2 = {}
     count = 0
     for i, c in enumerate(CLASSES):
