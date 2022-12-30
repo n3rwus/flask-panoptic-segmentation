@@ -69,6 +69,7 @@ def transform_image(image_bytes):
 
 # compute the scores, excluding the "no-object" class (the last one)
 def print_remaining_masks(out):
+    buf = io.BytesIO()
     # compute the scores, excluding the "no-object" class (the last one)
     scores = torch.Tensor.cpu(
         out["pred_logits"]).softmax(-1)[..., :-1].max(-1)[0]
@@ -88,9 +89,8 @@ def print_remaining_masks(out):
         ax.axis('off')
     return fig.tight_layout()
 
+
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
-
-
 def print_panoptic_segmentation(result):
     palette = itertools.cycle(sns.color_palette())
 
