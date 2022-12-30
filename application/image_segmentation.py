@@ -20,6 +20,7 @@ from detectron2.data import MetadataCatalog
 from panopticapi.utils import id2rgb, rgb2id
 from detectron2.utils.visualizer import Visualizer
 
+
 # torch.set_grad_enabled(False)
 
 # model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
@@ -70,7 +71,6 @@ from detectron2.utils.visualizer import Visualizer
 
 # compute the scores, excluding the "no-object" class (the last one)
 def print_remaining_masks(out):
-    buf = io.BytesIO()
     # compute the scores, excluding the "no-object" class (the last one)
     scores = torch.Tensor.cpu(
         out["pred_logits"]).softmax(-1)[..., :-1].max(-1)[0]
@@ -79,6 +79,7 @@ def print_remaining_masks(out):
 
     # Plot all the remaining masks
     ncols = 5
+    buf = io.BytesIO()
     fig, axs = plt.subplots(ncols=ncols, nrows=math.ceil(
         keep.sum().item() / ncols), figsize=(18, 10))
     for line in axs:
@@ -87,10 +88,13 @@ def print_remaining_masks(out):
     for i, mask in enumerate(torch.Tensor.cpu(out["pred_masks"])[keep]):
         ax = axs[i // ncols, i % ncols]
         ax.imshow(mask, cmap="cividis")
-        ax.axis('off')
+        ax.set_title(str(i))
+        ax.set_axis_off()
     fig.tight_layout()
+    fig.savefig(buf, format="png", bbox_inches='tight')
     buf.seek(0)
-    return Image.open(buf)
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return data
 
 
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
@@ -112,15 +116,14 @@ def print_panoptic_segmentation(result):
     plt.figure(figsize=(15, 15))
     plt.imshow(panoptic_seg)
     plt.axis('on')
-    plt.savefig(buf, format="png")
+    plt.savefig(buf, format="png", bbox_inches='tight')
 
     buf.seek(0)
     data = base64.b64encode(buf.read()).decode("ascii")
     return data
 
 
-# result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
-def print_detectron2_visualization(result):
+def print_detectron2_visualization(result, im):
     # We extract the segments info and the panoptic result from DETR's prediction
     segments_info = deepcopy(result["segments_info"])
     # Panoptic predictions are stored in a special format png
@@ -143,4 +146,9 @@ def print_detectron2_visualization(result):
     v._default_font_size = 20
     v = v.draw_panoptic_seg_predictions(
         panoptic_seg, segments_info, area_threshold=0)
-    return IPython.display(Image.fromarray(cv2.cvtColor(v.get_image(), cv2.COLOR_BGR2RGB)))
+    np_image_array = Image.fromarray(
+        cv2.cvtColor(v.get_image(), cv2.COLOR_BGR2RGB))
+    buff = io.BytesIO()
+    np_image_array.save(buff, format="png")
+    data = base64.b64encode(buff.getvalue()).decode("utf-8")
+    return data

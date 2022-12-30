@@ -1,10 +1,12 @@
+import io
 import base64
 import torch.cuda
+from PIL import Image
 from io import BytesIO
 from matplotlib.figure import Figure
 
 from application import app
-from application.image_segmentation import print_panoptic_segmentation, print_remaining_masks
+from application.image_segmentation import print_detectron2_visualization, print_panoptic_segmentation, print_remaining_masks
 from flask import render_template, request, jsonify, redirect
 
 from application.inference import get_prediction, get_segmentation
@@ -46,21 +48,11 @@ def test():
         out, result = get_segmentation(image_bytes=img_bytes)
         # data = print_remaining_masks(out)
         data2 = print_panoptic_segmentation(result)
+        data3 = print_detectron2_visualization(
+            result, im=Image.open(io.BytesIO(img_bytes)))
         # print(data)
-        return f"<img src='data:image/png;base64,{data2}'/>"
+        # return f"<img src='data:image/png;base64,{data2}'/>"
+        return render_template('result.html', class_id="XD",
+                               class_name="XD", panoptic=data3, is_cuda_used=torch.cuda.is_available())
         # return render_template('result.html')
     return render_template('index.html')
-
-
-@app.route("/hello")
-def hello():
-    # Generate the figure **without using pyplot**.
-    fig = Figure()
-    ax = fig.subplots()
-    ax.plot([1, 2])
-    # Save it to a temporary buffer.
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    # Embed the result in the html output.
-    data = base64.b64encode(buf.getbuffer()).decode("ascii")
-    return f"<img src='data:image/png;base64,{data}'/>"
