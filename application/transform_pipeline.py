@@ -6,8 +6,13 @@ from torchvision import models
 from PIL import Image
 
 
-def get_model(path=''):
+def get_densenet121(path=''):
     return models.densenet121(pretrained=True).to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
+
+
+def get_detr():
+    return torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
+                          return_postprocessor=True, num_classes=250).to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
 
 
 def transform_image(image_bytes):

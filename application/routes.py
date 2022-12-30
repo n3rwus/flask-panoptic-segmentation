@@ -4,7 +4,7 @@ from io import BytesIO
 from matplotlib.figure import Figure
 
 from application import app
-from application.image_segmentation import transform_image
+from application.image_segmentation import print_remaining_masks, transform_image
 from flask import render_template, request, jsonify, redirect
 
 from application.inference import get_prediction
@@ -44,8 +44,9 @@ def test():
             return redirect(request.url)
         img_bytes = file.read()
         out = transform_image(image_bytes=img_bytes)
-        
-        return render_template('result.html')
+        data = print_remaining_masks(out)
+        return f"<img src='data:image/png;base64,{data}'/>"
+        # return render_template('result.html')
     return render_template('index.html')
 
 

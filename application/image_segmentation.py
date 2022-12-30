@@ -1,3 +1,4 @@
+import base64
 import io
 import cv2
 import math
@@ -29,42 +30,42 @@ def get_model():
     return model.to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
 
 
-def read_coco_classes_from_file(path='application/static/coco_classes.txt'):
-    coco_classes_file = open(path, "r")
+# def read_coco_classes_from_file(path='application/static/coco_classes.txt'):
+#     coco_classes_file = open(path, "r")
 
-    coco_classes = coco_classes_file.read()
-    coco_classes_file.close()
-    return coco_classes.split(",")
+#     coco_classes = coco_classes_file.read()
+#     coco_classes_file.close()
+#     return coco_classes.split(",")
 
 
 # Detectron2 uses a different numbering scheme, we build a conversion table
-def conversion_table(CLASSES):
-    coco2d2 = {}
-    count = 0
-    for i, c in enumerate(CLASSES):
-        if c != "N/A":
-            coco2d2[i] = count
-            count += 1
+# def conversion_table(CLASSES):
+#     coco2d2 = {}
+#     count = 0
+#     for i, c in enumerate(CLASSES):
+#         if c != "N/A":
+#             coco2d2[i] = count
+#             count += 1
 
 
-coco2d2 = conversion_table(read_coco_classes_from_file())
+# coco2d2 = conversion_table(read_coco_classes_from_file())
 
 
 # standard PyTorch mean-std input image normalization
-def transform_image(image_bytes):
-    transform = transform.Compose([
-        transform.Resize(800),
-        transform.ToTensor(),
-        transform.Normalize(
-            [0.485, 0.456, 0.406],
-            [0.229, 0.224, 0.225])
-    ])
-    image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-    tensor = transform(image).unsqueeze(0)
+# def transform_image(image_bytes):
+#     transform = transform.Compose([
+#         transform.Resize(800),
+#         transform.ToTensor(),
+#         transform.Normalize(
+#             [0.485, 0.456, 0.406],
+#             [0.229, 0.224, 0.225])
+#     ])
+#     image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+#     tensor = transform(image).unsqueeze(0)
 
-    if torch.cuda.is_available():
-        tensor = tensor.to(torch.device("cuda:0"))
-    return model(tensor)
+#     if torch.cuda.is_available():
+#         tensor = tensor.to(torch.device("cuda:0"))
+#     return model(tensor)
 
 
 # compute the scores, excluding the "no-object" class (the last one)
@@ -87,7 +88,9 @@ def print_remaining_masks(out):
         ax = axs[i // ncols, i % ncols]
         ax.imshow(mask, cmap="cividis")
         ax.axis('off')
-    return fig.tight_layout()
+    fig.tight_layout()
+    fig.savefig(buf, format="png")
+    return base64.b64encode(buf.getbuffer()).decode("ascii")
 
 
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
@@ -110,9 +113,8 @@ def print_panoptic_segmentation(result):
     plt.axis('on')
     return plt.show()
 
+
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
-
-
 def print_detectron2_visualization(result):
     # We extract the segments info and the panoptic result from DETR's prediction
     segments_info = deepcopy(result["segments_info"])
