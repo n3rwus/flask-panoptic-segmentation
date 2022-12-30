@@ -22,12 +22,12 @@ from detectron2.utils.visualizer import Visualizer
 
 torch.set_grad_enabled(False)
 
-model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
-                                      return_postprocessor=True, num_classes=250)
+# model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
+#                                       return_postprocessor=True, num_classes=250)
 
 
-def get_model():
-    return model.to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
+# def get_model():
+#     return model.to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
 
 
 # def read_coco_classes_from_file(path='application/static/coco_classes.txt'):

@@ -4,10 +4,10 @@ from io import BytesIO
 from matplotlib.figure import Figure
 
 from application import app
-from application.image_segmentation import print_remaining_masks, transform_image
+from application.image_segmentation import print_panoptic_segmentation, print_remaining_masks
 from flask import render_template, request, jsonify, redirect
 
-from application.inference import get_prediction
+from application.inference import get_prediction, get_segmentation
 from application.transform_pipeline import format_class_name
 
 
@@ -43,9 +43,11 @@ def test():
         if not file:
             return redirect(request.url)
         img_bytes = file.read()
-        out = transform_image(image_bytes=img_bytes)
+        out, result = get_segmentation(image_bytes=img_bytes)
         data = print_remaining_masks(out)
-        return f"<img src='data:image/png;base64,{data}'/>"
+        data2 = print_panoptic_segmentation(result)
+        print(data)
+        return f"<img src='data:image/png;base64,{data2}'/>"
         # return render_template('result.html')
     return render_template('index.html')
 
