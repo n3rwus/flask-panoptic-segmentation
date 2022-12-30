@@ -44,9 +44,9 @@ def test():
             return redirect(request.url)
         img_bytes = file.read()
         out, result = get_segmentation(image_bytes=img_bytes)
-        data = print_remaining_masks(out)
+        # data = print_remaining_masks(out)
         data2 = print_panoptic_segmentation(result)
-        print(data)
+        # print(data)
         return f"<img src='data:image/png;base64,{data2}'/>"
         # return render_template('result.html')
     return render_template('index.html')

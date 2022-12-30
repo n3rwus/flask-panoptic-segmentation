@@ -20,7 +20,7 @@ from detectron2.data import MetadataCatalog
 from panopticapi.utils import id2rgb, rgb2id
 from detectron2.utils.visualizer import Visualizer
 
-torch.set_grad_enabled(False)
+# torch.set_grad_enabled(False)
 
 # model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
 #                                       return_postprocessor=True, num_classes=250)
@@ -89,12 +89,13 @@ def print_remaining_masks(out):
         ax.imshow(mask, cmap="cividis")
         ax.axis('off')
     fig.tight_layout()
-    fig.savefig(buf, format="png")
-    return base64.b64encode(buf.getbuffer()).decode("ascii")
+    buf.seek(0)
+    return Image.open(buf)
 
 
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
 def print_panoptic_segmentation(result):
+    buf = io.BytesIO()
     palette = itertools.cycle(sns.color_palette())
 
     # The segmentation is stored in a special-format png
@@ -111,7 +112,11 @@ def print_panoptic_segmentation(result):
     plt.figure(figsize=(15, 15))
     plt.imshow(panoptic_seg)
     plt.axis('on')
-    return plt.show()
+    plt.savefig(buf, format="png")
+
+    buf.seek(0)
+    data = base64.b64encode(buf.read()).decode("ascii")
+    return data
 
 
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
