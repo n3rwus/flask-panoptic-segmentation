@@ -1,70 +1,17 @@
+import base64
 import io
 import cv2
 import math
 import numpy
 import torch
-import requests
 import itertools
-import panopticapi
-from torch import nn
 from PIL import Image
 import seaborn as sns
-import IPython.display
 from copy import deepcopy
 import matplotlib.pyplot as plt
-from detectron2.config import get_cfg
-from torchvision.models import resnet50
-import torchvision.transforms as transform
 from detectron2.data import MetadataCatalog
-from panopticapi.utils import id2rgb, rgb2id
+from panopticapi.utils import rgb2id
 from detectron2.utils.visualizer import Visualizer
-
-torch.set_grad_enabled(False)
-
-model, postprocessor = torch.hub.load('facebookresearch/detr', 'detr_resnet101_panoptic', pretrained=True,
-                                      return_postprocessor=True, num_classes=250)
-
-
-def get_model():
-    return model.to(torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')).eval()
-
-
-def read_coco_classes_from_file(path='application/static/coco_classes.txt'):
-    coco_classes_file = open(path, "r")
-
-    coco_classes = coco_classes_file.read()
-    coco_classes_file.close()
-    return coco_classes.split(",")
-
-
-# Detectron2 uses a different numbering scheme, we build a conversion table
-def conversion_table(CLASSES):
-    coco2d2 = {}
-    count = 0
-    for i, c in enumerate(CLASSES):
-        if c != "N/A":
-            coco2d2[i] = count
-            count += 1
-
-
-coco2d2 = conversion_table(read_coco_classes_from_file())
-
-
-# standard PyTorch mean-std input image normalization
-def transform_image(image_bytes):
-    transform = transform.Compose([
-        transform.Resize(800),
-        transform.ToTensor(),
-        transform.Normalize(
-            [0.485, 0.456, 0.406],
-            [0.229, 0.224, 0.225])
-    ])
-    image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
-    tensor = transform(image).unsqueeze(0)
-
-    if torch.cuda.is_available():
-        tensor = tensor.to(torch.device("cuda:0"))
-    return model(tensor)
 
 
 # compute the scores, excluding the "no-object" class (the last one)
@@ -77,6 +24,7 @@ def print_remaining_masks(out):
 
     # Plot all the remaining masks
     ncols = 5
+    buf = io.BytesIO()
     fig, axs = plt.subplots(ncols=ncols, nrows=math.ceil(
         keep.sum().item() / ncols), figsize=(18, 10))
     for line in axs:
@@ -85,13 +33,18 @@ def print_remaining_masks(out):
     for i, mask in enumerate(torch.Tensor.cpu(out["pred_masks"])[keep]):
         ax = axs[i // ncols, i % ncols]
         ax.imshow(mask, cmap="cividis")
-        ax.axis('off')
-    return fig.tight_layout()
+        ax.set_title(str(i))
+        ax.set_axis_off()
+    fig.tight_layout()
+    fig.savefig(buf, format="png", bbox_inches='tight')
+    buf.seek(0)
+    data = base64.b64encode(buf.getbuffer()).decode("ascii")
+    return data
+
 
 # result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
-
-
 def print_panoptic_segmentation(result):
+    buf = io.BytesIO()
     palette = itertools.cycle(sns.color_palette())
 
     # The segmentation is stored in a special-format png
@@ -108,12 +61,14 @@ def print_panoptic_segmentation(result):
     plt.figure(figsize=(15, 15))
     plt.imshow(panoptic_seg)
     plt.axis('on')
-    return plt.show()
+    plt.savefig(buf, format="png", bbox_inches='tight')
 
-# result = postprocessor(out, torch.as_tensor(tensor.shape[-2:]).unsqueeze(0))[0]
+    buf.seek(0)
+    data = base64.b64encode(buf.read()).decode("ascii")
+    return data
 
 
-def print_detectron2_visualization(result):
+def print_detectron2_visualization(result, im):
     # We extract the segments info and the panoptic result from DETR's prediction
     segments_info = deepcopy(result["segments_info"])
     # Panoptic predictions are stored in a special format png
@@ -136,4 +91,9 @@ def print_detectron2_visualization(result):
     v._default_font_size = 20
     v = v.draw_panoptic_seg_predictions(
         panoptic_seg, segments_info, area_threshold=0)
-    return IPython.display(Image.fromarray(cv2.cvtColor(v.get_image(), cv2.COLOR_BGR2RGB)))
+    np_image_array = Image.fromarray(
+        cv2.cvtColor(v.get_image(), cv2.COLOR_BGR2RGB))
+    buff = io.BytesIO()
+    np_image_array.save(buff, format="png")
+    data = base64.b64encode(buff.getvalue()).decode("utf-8")
+    return data
