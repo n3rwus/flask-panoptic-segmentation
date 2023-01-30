@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.10-alpine
+FROM nvcr.io/nvidia/pytorch:22.12-py3
 
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
