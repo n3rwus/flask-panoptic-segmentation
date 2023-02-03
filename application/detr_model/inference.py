@@ -1,5 +1,5 @@
 import torch.cuda
-from application.transform_pipeline import get_detr,  transform_image_for_segmentation
+from application.detr_model.transform_pipeline import get_detr,  transform_image_for_segmentation
 
 torch.set_grad_enabled(False)
 

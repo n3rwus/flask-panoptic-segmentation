@@ -50,12 +50,15 @@ fastjsonschema==2.16.2
 fastrlock==0.8.1
 filelock==3.8.2
 Flask==2.2.2
+Flask-Login==0.6.2
+Flask-SQLAlchemy==3.0.3
 fonttools==4.38.0
 fsspec==2022.11.0
 fvcore==0.1.5.post20221221
 google-auth==2.15.0
 google-auth-oauthlib==0.4.6
 graphsurgeon @ file:///workspace/TensorRT-8.5.1.7/graphsurgeon/graphsurgeon-0.4.6-py2.py3-none-any.whl
+greenlet==2.0.2
 grpcio==1.51.1
 HeapDict==1.0.1
 huggingface-hub==0.11.1
@@ -189,6 +192,7 @@ spacy==3.4.4
 spacy-legacy==3.0.10
 spacy-loggers==1.0.4
 sphinx-glpi-theme==0.3
+SQLAlchemy==2.0.1
 srsly==2.4.5
 stack-data==0.6.2
 sympy==1.11.1
