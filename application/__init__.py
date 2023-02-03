@@ -1,8 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from sqlalchemy import create_engine
-from sqlalchemy.pool import StaticPool
+import os
 
 db = SQLAlchemy()
 
@@ -10,8 +9,8 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
-    app.config['SECRET_KEY'] = '9e535854a2b5194a97225b2d2c4ea5b89adda5ae0a1f2f8f4d42c688d86158cd'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///root/workspace/engineering-project/application/db.sqlite'
+    app.config['SECRET_KEY'] = os.environ.get("SECRET")
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://///root/workspace/engineering-project/application/db.sqlite"
 
     db.init_app(app)
 
