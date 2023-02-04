@@ -40,5 +40,6 @@ def segmentation():
         data2 = print_panoptic_segmentation(result)
         data3 = print_detectron2_visualization(
             result, im=Image.open(io.BytesIO(img_bytes)))
-        return render_template('result.html', panoptic=data2, detectron=data3, is_cuda_used="👍" if torch.cuda.is_available() else "👎")
+        return render_template('render.html', panoptic=data2, detectron=data3, is_cuda_used="👍" if torch.cuda.is_available() else "👎")
+        # return "XD"
     return render_template('segmentation.html')
