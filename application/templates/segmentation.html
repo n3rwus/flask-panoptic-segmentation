@@ -51,9 +51,13 @@
                 button.removeAttr('disabled');
             } else {
                 button.attr('disabled', 'disabled');
+                alert("File must be an image (JPG, JPEG).");
+                fileInput.val("");
             }
         } else {
             button.attr('disabled', 'disabled');
+            alert("File is too big (2MB max).");
+            fileInput.val("");
         }
     };
 </script>
