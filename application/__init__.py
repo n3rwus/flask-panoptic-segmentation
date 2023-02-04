@@ -31,7 +31,4 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
-    # from .upload_file import upload_file as upload_file_blueprint
-    # app.register_blueprint(upload_file_blueprint)
-
     return app
